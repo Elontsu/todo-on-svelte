@@ -3,8 +3,9 @@
   import type {ITodo} from "../../types/types.ts";
   import {pickedSort, todoItems} from "../../store/stores";
   import { sendData } from '../../api/sendData.js';
+  import type { Writable } from 'svelte/store';
 
-  let todos: any;
+  let todos: ITodo[] = [];
   let current: string = '';
 
   const complete = () => {
@@ -18,7 +19,7 @@
 
     await sendData('http://localhost:3001/filter', {value: current});
 
-    const unsubscribe = todoItems.subscribe((value: any) => {
+    const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value
     })
   }
@@ -27,7 +28,7 @@
 
     await sendData('http://localhost:3001/filter', {value: current});
 
-    const unsubscribe = todoItems.subscribe((value: any[]) => {
+    const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value.filter((todo: ITodo) => todo.completed === true)
     })
   }
@@ -36,13 +37,13 @@
 
     await sendData('http://localhost:3001/filter', {value: current});
     
-    const unsubscribe = todoItems.subscribe((value: any) => {
+    const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value.filter((todo: ITodo) => todo.completed !== true)
     })
   }
   
   function subscribe1() {
-    const unsubscribe = todoItems.subscribe((value: any) => {
+    const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value;
       // setItemToLS('todolist', todos);
       
@@ -50,7 +51,7 @@
   }
   
   function subscribe2() {
-    const unsubscribe = pickedSort.subscribe((value: any) => {
+    const unsubscribe = pickedSort.subscribe((value: string) => {
       current = value;
       switch (current) {
         case 'all':

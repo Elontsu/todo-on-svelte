@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "server": "json-server -w src/db/bd.json -p 3001",
-    "dev": "concurrently \"bun run server\" \" bun run start \"",
+    "dev": "concurrently \"pnpm run server\" \" pnpm run start \"",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"

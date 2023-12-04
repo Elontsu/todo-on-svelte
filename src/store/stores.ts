@@ -12,8 +12,8 @@ import { onMount } from "svelte";
 
 
 
-const todos: any = [];
-const pickedSortValue: any = "all";
+const todos: ITodo[] = [];
+const pickedSortValue = "all" as const;
 
 export const todoItems = writable(todos);
 
