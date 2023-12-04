@@ -5,11 +5,6 @@
   import { onMount } from 'svelte';
   import { getData } from './api/getData';
 
-  const clearStorage = () => {
-    todoItems.set([]);
-    localStorage.clear();
-  }
-
   const clickHandler = () => {
     sideBarActivate.update((n: boolean) => !n);
   }
@@ -17,17 +12,17 @@
   onMount(async () => {
     const todos = await getData('http://localhost:3001/todos');
     const filter = await getData('http://localhost:3001/filter');
+
+    console.log(todos);
+
     todoItems.set(todos);
     pickedSort.set(filter);
   })
-
-
 </script>
 
 <main class="App">
   <TodoList/>
   <button class="btn" on:click={clickHandler}>Add new Todo</button>
-  <button class="btn" on:click={clearStorage}>Delete all todos</button>
   <SideBar/>
 </main>
 

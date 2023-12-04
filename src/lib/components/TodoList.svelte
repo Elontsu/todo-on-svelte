@@ -1,12 +1,19 @@
 <script lang="ts">
-  import {fade, fly} from 'svelte/transition'
+  import {fly} from 'svelte/transition'
   import type {ITodo} from "../../types/types.ts";
   import {pickedSort, todoItems} from "../../store/stores";
   import { sendData } from '../../api/sendData.js';
-  import type { Writable } from 'svelte/store';
 
   let todos: ITodo[] = [];
   let current: string = '';
+
+  const deletePost = (id: number) => {
+    fetch('http://localhost:3001/todos/' + id, {
+      method: 'DELETE'
+    }).catch(error => console.error(error))
+    todos = todos.filter((todo: ITodo) => todo.id !== id)
+  }
+
 
   const complete = () => {
     todoItems.update((data: ITodo[]) => {
@@ -79,8 +86,9 @@
   <button class="btn" on:click={showNotCompleted} disabled={current === 'not-completed'}>Show not completed</button>
   <button class="btn" on:click={showCompleted} disabled={current === 'completed'}>Show completed</button>
 
-  {#each todos as {title, completed}, todo}
+  {#each todos as {title, completed, id}, todo}
     <div class="todo-item" in:fly={{ x: -200, duration: 1000}} out:fly={{x: 200, duration: 1000}} class:completed={completed}>
+      <button on:click={() => deletePost(id)} class="btn-delete">Delete</button>
       <span class="todo-item-text">{title}</span>
       <input type="checkbox" bind:checked={completed} on:change={complete}>
     </div>
@@ -109,6 +117,15 @@
       font-size: 18px;
       padding: 10px;
       width: 100%;
+
+      .btn-delete {
+        border: 1px solid teal;
+        background-color: transparent;
+        user-select: none;
+        margin-right: 10px;
+        cursor: pointer;
+        padding: 5px;
+      }
 
       &.completed {
         .todo-item-text {
