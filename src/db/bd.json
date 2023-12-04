@@ -1,0 +1,32 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Some Title",
+      "completed": false
+    },
+    {
+      "id": 1701684588613,
+      "completed": false,
+      "title": "Hello World"
+    },
+    {
+      "id": 1701684757225,
+      "completed": false,
+      "title": "SDG"
+    },
+    {
+      "id": 1701684887042,
+      "completed": false,
+      "title": "фывафыва"
+    },
+    {
+      "id": 1701684937603,
+      "completed": false,
+      "title": "ваповап"
+    }
+  ],
+  "filter": {
+    "value": "all"
+  }
+}
