@@ -17,7 +17,7 @@
       title: value,
     };
   
-    todoItems.update(async (todos: ITodo[]) => {
+    todoItems.update((todos: ITodo[]) => {
       sendData('http://localhost:3001/todos', newTodo);
 
       return [...todos, newTodo]
