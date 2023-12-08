@@ -1,17 +1,12 @@
 {
   "todos": [
     {
-      "id": 1701692723905,
-      "completed": false,
-      "title": "sadfas"
-    },
-    {
       "id": 1701692726292,
       "completed": false,
       "title": "ahaedvad"
     }
   ],
   "filter": {
-    "value": "all"
+    "value": "completed"
   }
 }

@@ -5,13 +5,17 @@
   import { sendData } from '../../api/sendData.js';
 
   let todos: ITodo[] = [];
-  let current: string = '';
+  let current = {
+    value: 'all'
+  };
 
   const deletePost = (id: number) => {
     fetch('http://localhost:3001/todos/' + id, {
       method: 'DELETE'
     }).catch(error => console.error(error))
     todos = todos.filter((todo: ITodo) => todo.id !== id)
+
+    todoItems.set(todos);
   }
 
 
@@ -22,27 +26,27 @@
   }
   
   const showAll = async () => {
-    current = 'all';
+    current.value = 'all';
 
-    await sendData('http://localhost:3001/filter', {value: current});
+    await sendData('http://localhost:3001/filter', {value: current.value});
 
     const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value
     })
   }
   const showCompleted = async () => {
-    current = 'completed';
+    current.value = 'completed';
 
-    await sendData('http://localhost:3001/filter', {value: current});
+    const response =await sendData('http://localhost:3001/filter', {value: current.value});
 
     const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value.filter((todo: ITodo) => todo.completed === true)
     })
   }
   const showNotCompleted = async () => {
-    current = 'not-completed';
+    current.value = 'not-completed';
 
-    await sendData('http://localhost:3001/filter', {value: current});
+    await sendData('http://localhost:3001/filter', {value: current.value});
     
     const unsubscribe = todoItems.subscribe((value: ITodo[]) => {
       todos = value.filter((todo: ITodo) => todo.completed !== true)
@@ -59,7 +63,7 @@
   
   function subscribe2() {
     const unsubscribe = pickedSort.subscribe((value: string) => {
-      current = value;
+      current.value = value;
       switch (current) {
         case 'all':
           showAll();
@@ -76,15 +80,14 @@
 
   subscribe1();
   subscribe2();
-
 </script>
 
 <div class="todo-list">
   <h1 class="list-title">Your Todo List</h1>
 
-  <button class="btn" on:click={showAll} disabled={current === 'all'}>Show All</button>
-  <button class="btn" on:click={showNotCompleted} disabled={current === 'not-completed'}>Show not completed</button>
-  <button class="btn" on:click={showCompleted} disabled={current === 'completed'}>Show completed</button>
+  <button class="btn" on:click={showAll} disabled={current.value === 'all'}>Show All</button>
+  <button class="btn" on:click={showNotCompleted} disabled={current.value === 'not-completed'}>Show not completed</button>
+  <button class="btn" on:click={showCompleted} disabled={current.value === 'completed'}>Show completed</button>
 
   {#each todos as {title, completed, id}, todo}
     <div class="todo-item" in:fly={{ x: -200, duration: 1000}} out:fly={{x: 200, duration: 1000}} class:completed={completed}>
